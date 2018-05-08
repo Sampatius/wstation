@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wstation", "wstation\wstation.vcxproj", "{EBCD8400-7616-4930-8C7D-D341780F3FFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM = Release|ARM
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Debug|ARM.ActiveCfg = Debug|ARM
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Debug|ARM.Build.0 = Debug|ARM
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Debug|x64.ActiveCfg = Debug|x64
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Debug|x64.Build.0 = Debug|x64
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Debug|x86.ActiveCfg = Debug|x86
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Debug|x86.Build.0 = Debug|x86
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Release|ARM.ActiveCfg = Release|ARM
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Release|ARM.Build.0 = Release|ARM
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Release|x64.ActiveCfg = Release|x64
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Release|x64.Build.0 = Release|x64
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Release|x86.ActiveCfg = Release|x86
+		{EBCD8400-7616-4930-8C7D-D341780F3FFA}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8AFB1ACE-0085-4286-BB98-8F86B72D76E0}
+	EndGlobalSection
+EndGlobal
