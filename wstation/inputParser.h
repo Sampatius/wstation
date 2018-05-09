@@ -1,21 +1,27 @@
 #pragma once
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <algorithm>
 
 class inputParser
 {
-
 public:
-	inputParser(int maxInput_);
+	inputParser();
 	~inputParser();
 
+	inline std::string getInput() { return inputString; }
+	inline std::vector<std::string> getCommmands() { return commandsVec; }
+
+	// Static function used in iterator to determine presence of extra whitespaces
+	static bool bothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
+
 	void readInput();
-	char* getInputArr();
 	void listCommands();
+	void parseInput();
 
 private:
 	int maxInput;
-	char *inputArr;
+	std::string inputString;
+	std::vector<std::string> commandsVec;
 };

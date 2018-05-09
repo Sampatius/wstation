@@ -1,12 +1,5 @@
 #include "curlHandler.h"
 
-/*	Init function
-Responsible for setting up curl for use
-
-PARAMS:
-char* url	URL to site
-*/
-
 curlHandler::curlHandler() {
 
 }
@@ -14,6 +7,10 @@ curlHandler::curlHandler() {
 curlHandler::~curlHandler() {
 
 }
+
+/*	Init function
+	Responsible for setting up curl for use
+*/
 
 void curlHandler::initCurl(char const *url) {
 
@@ -36,7 +33,7 @@ void curlHandler::initCurl(char const *url) {
 }
 
 /*	File handler function
-Responsible for opening, closing and handling the file
+	Responsible for opening, closing and handling the file
 */
 
 void curlHandler::openAndWrite() {
@@ -57,7 +54,7 @@ void curlHandler::openAndWrite() {
 }
 
 /*	Write function
-Used to write the data to stream
+	Used to write the data to stream
 */
 size_t curlHandler::writeData(void *ptr, size_t size, size_t nmemb, void *stream) {
 	size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
@@ -65,7 +62,7 @@ size_t curlHandler::writeData(void *ptr, size_t size, size_t nmemb, void *stream
 }
 
 /*	Clean up function
-Performs required cleans for curl
+	Performs required cleans for curl
 */
 void curlHandler::cleanUp() {
 	curl_easy_cleanup(curl_handle);
