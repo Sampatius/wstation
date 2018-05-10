@@ -1,7 +1,8 @@
 #include "inputParser.h"
 #include <iostream>
 
-inputParser::inputParser() {
+inputParser::inputParser() 
+{
 }
 
 inputParser::~inputParser()
@@ -13,7 +14,8 @@ inputParser::~inputParser()
 	to construct a string
 */
 
-std::string inputParser::readInput() {
+std::string inputParser::readInput() 
+{
 
 	// Variables for reading single characters and to hold the input in Vector
 	int c;
@@ -43,15 +45,12 @@ std::string inputParser::readInput() {
 	}
 }
 
-void inputParser::listHelp() {
-
-}
-
 /*	Parse users input
 	Removes excess whitespaces from the user input and splits the string to a vector
 */
 
-void inputParser::parseInput(std::string input) {
+void inputParser::parseInput(std::string input) 
+{
 
 	// Iterate over the string and remove excess whitespaces
 	std::string::iterator new_end = std::unique(input.begin(), input.end(), bothAreSpaces);
@@ -65,19 +64,25 @@ void inputParser::parseInput(std::string input) {
 		size_t pos = 0;
 		std::string temp;
 
-		// Look for = symbol in each string and divide it into input and parameter
+		// Look for = symbol in each string push them to Vector
 		if ((pos = token.find('=')) != std::string::npos) {
 			temp = token.substr(0, pos);
 			if (temp.length() > 0) {
-				inputsVec.push_back(temp);
 				temp = token.substr((pos + 1), std::string::npos);
 				if (temp.length() > 0) {
-					paramsVec.push_back(temp);
-				}
-				else {
-					inputsVec.pop_back();
+					inputsVec.push_back(token);
 				}
 			}
 		}
+	}
+}
+
+commands inputParser::mapInput(std::string input) 
+{
+	if (input == "start") return start;
+	if (input == "help") return help;
+	if (input == "quit") return quit;
+	else {
+		return NOT_DEFINED;
 	}
 }

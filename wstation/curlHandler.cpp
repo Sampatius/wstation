@@ -1,10 +1,12 @@
 #include "curlHandler.h"
 
-curlHandler::curlHandler() {
+curlHandler::curlHandler() 
+{
 
 }
 
-curlHandler::~curlHandler() {
+curlHandler::~curlHandler() 
+{
 
 }
 
@@ -12,7 +14,8 @@ curlHandler::~curlHandler() {
 	Responsible for setting up curl for use
 */
 
-void curlHandler::initCurl(std::string url) {
+void curlHandler::initCurl(std::string url) 
+{
 
 	curl_global_init(CURL_GLOBAL_ALL);
 
@@ -36,7 +39,8 @@ void curlHandler::initCurl(std::string url) {
 	Responsible for opening, closing and handling the file
 */
 
-void curlHandler::openAndWrite(std::string filename) {
+void curlHandler::openAndWrite(std::string filename) 
+{
 
 	// Open the file
 	pagefile = fopen(filename.c_str(), "wb");
@@ -56,7 +60,8 @@ void curlHandler::openAndWrite(std::string filename) {
 /*	Clean up function
 	Performs required cleans for curl
 */
-void curlHandler::cleanUp() {
+void curlHandler::cleanUp() 
+{
 	curl_easy_cleanup(curl_handle);
 
 	curl_global_cleanup();

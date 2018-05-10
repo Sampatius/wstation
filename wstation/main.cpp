@@ -1,45 +1,51 @@
-#include "curlHandler.h"
 #include "inputParser.h"
-#include "menu.h"
-#include <iostream>
+#include "messagePrinter.h"
+#include "taskHandler.h"
 
-#define CURL_TEST   1
-#define INPUT_TEST  0
-#define MENU_TEST   0
 int main() {
-#if CURL_TEST
 
-		std::string url = "http://data.fmi.fi/fmi-apikey/KEY/wfs?request=getFeature&storedquery_id=fmi::observations::weather::daily::simple&place=helsinki&";
+	inputParser parser;
+	messagePrinter printer;
+	taskHandler handler;
 
-		curlHandler handler;
+	std::string userInput;
+	std::vector<std::string> availableCommands = { "start", "help", "quit" };
+	std::vector<std::string> availableOptions = { "place", "parameters", "starttime", "endtime" , "timestep"};
+	std::vector<std::string> availableParameters = { "tday", "tmin", "tmax" };
 
-		handler.initCurl(url);
+	bool loop = true;
 
-		handler.openAndWrite("test.out");
+	printer.initLists(availableCommands, availableOptions, availableParameters);
 
-		handler.cleanUp();
-#endif
+	printer.printIntro();
 
-#if INPUT_TEST
-		inputParser parser;
+	std::vector<std::string> test;
 
-		std::string input = parser.readInput();
-		parser.parseInput(input);
+	while (loop) {
 
-		std::cout << "Inputs: \n";
-		for (int i = 0; i < parser.getInputs().size(); i++) {
-			std::cout << parser.getInputs().at(i) << '\n';
+		userInput = parser.readInput();
+
+		switch (parser.mapInput(userInput)) {
+		case start:
+			printer.printInstructions();
+			userInput = parser.readInput();
+			parser.parseInput(userInput);
+			handler.startTask(parser.getInputs(), "helsinki");
+			break;
+		case help:
+			printer.printHelp();
+			break;
+		case quit:
+			printer.printQuit();
+			loop = false;
+			break;
+		case NOT_DEFINED:
+			printer.printFailedInput();
+			break;
+		default:
+			std::cout << "THIS SHOULD NEVER BE SEEN!" << std::endl;
+			break;
 		}
 
-		std::cout << "Params: \n";
-		for (int i = 0; i < parser.getParams().size(); i++) {
-			std::cout << parser.getParams().at(i) << '\n';
-		}
-		input = parser.readInput();
 	}
-#endif
-
-#if MENU_TEST
-	menu menu;
-#endif
 }
