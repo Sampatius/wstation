@@ -11,17 +11,19 @@ public:
 	~inputParser();
 
 	inline std::string getInput() { return inputString; }
-	inline std::vector<std::string> getCommmands() { return commandsVec; }
+	inline std::vector<std::string> getInputs() { return inputsVec; }
+	inline std::vector<std::string> getParams() { return paramsVec; }
 
 	// Static function used in iterator to determine presence of extra whitespaces
 	static bool bothAreSpaces(char lhs, char rhs) { return (lhs == rhs) && (lhs == ' '); }
 
-	void readInput();
-	void listCommands();
-	void parseInput();
+	std::string readInput();
+	void listHelp();
+	void parseInput(std::string input);
 
 private:
 	int maxInput;
 	std::string inputString;
-	std::vector<std::string> commandsVec;
+	std::vector<std::string> inputsVec;
+	std::vector<std::string> paramsVec;
 };

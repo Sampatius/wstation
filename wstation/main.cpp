@@ -3,43 +3,43 @@
 #include "menu.h"
 #include <iostream>
 
-#define CURL_TEST   0
-#define INPUT_TEST  1
+#define CURL_TEST   1
+#define INPUT_TEST  0
 #define MENU_TEST   0
 int main() {
-
-	while (1) {
 #if CURL_TEST
-		char url[250];
-		char loc[] = "helsinki";
 
-		sprintf(url, "http://data.fmi.fi/fmi-apikey/5a633ac3-ef79-4ba6-ae28-b3b737b76871/wfs?request=getFeature&storedquery_id=fmi::observations::weather::daily::simple&place=%s&parameters=temperature&", loc);
+		std::string url = "http://data.fmi.fi/fmi-apikey/KEY/wfs?request=getFeature&storedquery_id=fmi::observations::weather::daily::simple&place=helsinki&";
 
 		curlHandler handler;
 
 		handler.initCurl(url);
 
-		handler.openAndWrite();
+		handler.openAndWrite("test.out");
 
 		handler.cleanUp();
 #endif
 
 #if INPUT_TEST
 		inputParser parser;
-		parser.readInput();
-		parser.parseInput();
-		std::vector<std::string> test = parser.getCommmands();
 
-		for (int i = 0; i < test.size(); i++) {
-			std::cout << test[i] << '\n';
+		std::string input = parser.readInput();
+		parser.parseInput(input);
+
+		std::cout << "Inputs: \n";
+		for (int i = 0; i < parser.getInputs().size(); i++) {
+			std::cout << parser.getInputs().at(i) << '\n';
 		}
 
-		parser.readInput();
+		std::cout << "Params: \n";
+		for (int i = 0; i < parser.getParams().size(); i++) {
+			std::cout << parser.getParams().at(i) << '\n';
+		}
+		input = parser.readInput();
+	}
 #endif
 
 #if MENU_TEST
-		menu menu;
+	menu menu;
 #endif
-		cbreak();
-	}
 }

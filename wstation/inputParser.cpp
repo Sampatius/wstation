@@ -13,7 +13,7 @@ inputParser::~inputParser()
 	to construct a string
 */
 
-void inputParser::readInput() {
+std::string inputParser::readInput() {
 
 	// Variables for reading single characters and to hold the input in Vector
 	int c;
@@ -28,8 +28,7 @@ void inputParser::readInput() {
 		// If it is new line, construct a string from the buffer Vector and push it to input Vector and break from while loop
 		if (c == '\n') {
 			std::string temp(inputBuff.begin(), inputBuff.end());
-			inputString = temp;
-			break;
+			return temp;
 		}
 
 		// Else if the input is backspace, pop back the buffer Vector
@@ -44,7 +43,7 @@ void inputParser::readInput() {
 	}
 }
 
-void inputParser::listCommands() {
+void inputParser::listHelp() {
 
 }
 
@@ -52,17 +51,33 @@ void inputParser::listCommands() {
 	Removes excess whitespaces from the user input and splits the string to a vector
 */
 
-void inputParser::parseInput() {
+void inputParser::parseInput(std::string input) {
 
 	// Iterate over the string and remove excess whitespaces
-	std::string::iterator new_end = std::unique(inputString.begin(), inputString.end(), bothAreSpaces);
-	inputString.erase(new_end, inputString.end());
+	std::string::iterator new_end = std::unique(input.begin(), input.end(), bothAreSpaces);
+	input.erase(new_end, input.end());
 
 	std::string token;
-	std::stringstream ss(inputString);
+	std::stringstream ss(input);
 
 	// Loop over the string and split it according to single whitespaces to a Vector
 	while (std::getline(ss, token, ' ')) {
-		commandsVec.push_back(token);
+		size_t pos = 0;
+		std::string temp;
+
+		// Look for = symbol in each string and divide it into input and parameter
+		if ((pos = token.find('=')) != std::string::npos) {
+			temp = token.substr(0, pos);
+			if (temp.length() > 0) {
+				inputsVec.push_back(temp);
+				temp = token.substr((pos + 1), std::string::npos);
+				if (temp.length() > 0) {
+					paramsVec.push_back(temp);
+				}
+				else {
+					inputsVec.pop_back();
+				}
+			}
+		}
 	}
 }

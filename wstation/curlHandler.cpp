@@ -12,7 +12,7 @@ curlHandler::~curlHandler() {
 	Responsible for setting up curl for use
 */
 
-void curlHandler::initCurl(char const *url) {
+void curlHandler::initCurl(std::string url) {
 
 	curl_global_init(CURL_GLOBAL_ALL);
 
@@ -20,7 +20,7 @@ void curlHandler::initCurl(char const *url) {
 	curl_handle = curl_easy_init();
 
 	// Set URL
-	curl_easy_setopt(curl_handle, CURLOPT_URL, url);
+	curl_easy_setopt(curl_handle, CURLOPT_URL, url.c_str());
 
 	// Use full protocol / debug output while testing
 	curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 1L);
@@ -29,17 +29,17 @@ void curlHandler::initCurl(char const *url) {
 	curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
 
 	// Send all data to this write function
-	curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, writeData(0, 0, 0, 0));
+	curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, NULL);
 }
 
 /*	File handler function
 	Responsible for opening, closing and handling the file
 */
 
-void curlHandler::openAndWrite() {
+void curlHandler::openAndWrite(std::string filename) {
 
 	// Open the file
-	pagefile = fopen(pagefilename, "wb");
+	pagefile = fopen(filename.c_str(), "wb");
 	if (pagefile) {
 
 		// Write the page body to this file handle
@@ -51,14 +51,6 @@ void curlHandler::openAndWrite() {
 		// CLose the file
 		fclose(pagefile);
 	}
-}
-
-/*	Write function
-	Used to write the data to stream
-*/
-size_t curlHandler::writeData(void *ptr, size_t size, size_t nmemb, void *stream) {
-	size_t written = fwrite(ptr, size, nmemb, (FILE *)stream);
-	return written;
 }
 
 /*	Clean up function
