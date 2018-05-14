@@ -16,6 +16,8 @@ public:
 	void printFailedInput();
 	void printQuit();
 
+	void printDebug(std::string message);
+
 private:
 	std::vector<std::string> listOfCommands;
 	std::vector<std::string> listOfQueryOptions;

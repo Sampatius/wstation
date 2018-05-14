@@ -71,6 +71,7 @@ void inputParser::parseInput(std::string input)
 				temp = token.substr((pos + 1), std::string::npos);
 				if (temp.length() > 0) {
 					inputsVec.push_back(token);
+					location = temp;
 				}
 			}
 		}
@@ -82,6 +83,10 @@ commands inputParser::mapInput(std::string input)
 	if (input == "start") return start;
 	if (input == "help") return help;
 	if (input == "quit") return quit;
+	if (input == "new") return search;
+	if (input == "check") return check;
+	if (input == "end") return end;
+	if (input == "back") return previous;
 	else {
 		return NOT_DEFINED;
 	}

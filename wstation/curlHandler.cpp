@@ -26,10 +26,10 @@ void curlHandler::initCurl(std::string url)
 	curl_easy_setopt(curl_handle, CURLOPT_URL, url.c_str());
 
 	// Use full protocol / debug output while testing
-	curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 1L);
+	//curl_easy_setopt(curl_handle, CURLOPT_VERBOSE, 1L);
 
 	// Disable progress meter
-	curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
+	//curl_easy_setopt(curl_handle, CURLOPT_NOPROGRESS, 1L);
 
 	// Send all data to this write function
 	curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, NULL);

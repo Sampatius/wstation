@@ -70,14 +70,12 @@
     <ClCompile Include="curlHandler.cpp" />
     <ClCompile Include="inputParser.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="menu.cpp" />
     <ClCompile Include="messagePrinter.cpp" />
     <ClCompile Include="taskHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="curlHandler.h" />
     <ClInclude Include="inputParser.h" />
-    <ClInclude Include="menu.h" />
     <ClInclude Include="messagePrinter.h" />
     <ClInclude Include="taskHandler.h" />
   </ItemGroup>
