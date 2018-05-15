@@ -2,6 +2,8 @@
 #include "messagePrinter.h"
 #include "taskHandler.h"
 
+#define test	0
+
 int main() {
 
 	// Objects
@@ -11,6 +13,7 @@ int main() {
 
 	// Variables and initialization Vectors
 	std::string userInput;
+	int interval;
 	std::vector<std::string> availableCommands = { "start", "help", "quit" };
 	std::vector<std::string> availableOptions = { "place", "parameters", "starttime", "endtime" , "timestep"};
 	std::vector<std::string> availableParameters = { "tday", "tmin", "tmax" };
@@ -21,8 +24,12 @@ int main() {
 	// Initialize the printer class with commands, options and parameters
 	printer.initLists(availableCommands, availableOptions, availableParameters);
 
+	handler.testFunc();
+
+#if test
 	// Print intro
 	printer.printIntro();
+
 
 	// Main loop
 	while (loop) {
@@ -35,7 +42,7 @@ int main() {
 
 		// Sub Menu -- User has other actions available
 		case start:
-			printer.printDebug("START");
+			printer.printMsg("START");
 			userInput = parser.readInput();
 
 			// Second layer of switch case to handle the functionality in so called Sub Menu
@@ -43,63 +50,76 @@ int main() {
 
 			// Search case -- User starts a new process to monitor selected location
 			case search:
-				printer.printDebug("SEARCH");
+				printer.printMsg("SEARCH");
 				userInput = parser.readInput();
-				parser.parseInput(userInput);
-				printer.printDebug("ENTER DELAY");
-				userInput = parser.readInput();
-				handler.startTask(parser.getInputs(), std::stoi(userInput), parser.getLocation());
-				break;
+				printer.printMsg("ENTER DELAY");
+				interval = parser.parseInt(parser.readInput());
+				if (interval < 0) {
+					printer.printMsg("Invalid or negative value given for interval. Returning to Main menu.");
+					break;
+				}
+				else {
+					printer.printMsg(userInput);
+					std::cout << "Interval: " << interval << std::endl;
+					//handler.startTask(userInput, interval);
+					break;
+				}
 
 			// Check case -- Display report about weather monitoring
 			case check:
-				printer.printDebug("CHECK");
+				printer.printMsg("CHECK");
 				break;
 			
 			// End case -- Terminate a process
 			case end:
-				printer.printDebug("END");
+				printer.printMsg("END");
 				userInput = parser.readInput();
-				handler.endTask(userInput);
+				if (handler.endTask(userInput)) {
+					printer.printMsg("Process ended.");
+				}
+				else {
+					printer.printMsg("No process found with given location.");
+				}
 				break;
 
 			// Previous case -- Return back to Main Menu
 			case previous:
-				printer.printDebug("PREVIOUS");
+				printer.printMsg("PREVIOUS");
 				break;
 
 			// NOT_DEFINED case -- Invalid input in Sub Menu
 			case NOT_DEFINED:
-				printer.printDebug("NOT DEFINED SUBMENU");
+				printer.printMsg("NOT DEFINED SUBMENU");
 				break;
 
 			// Default case -- Should never be seen
 			default:
-				printer.printDebug("START MENU DEFAULT");
+				printer.printMsg("START MENU DEFAULT");
 			}
 			break;
 
 		// Help case -- Print out info about commands
 		case help:
-			printer.printDebug("HELP");
+			printer.printMsg("HELP");
 			break;
 
 		// Quit case -- Exit program and close all program related processes
 		case quit:
-			printer.printDebug("QUIT");
+			printer.printMsg("QUIT");
 			loop = false;
 			break;
 		
 		// NOT_DEFINED case -- If input doesn't get matched in mapping function, enter this case
 		case NOT_DEFINED:
-			printer.printDebug("FAILED INPUT");
+			printer.printMsg("FAILED INPUT");
 			break;
 
 		// Default case -- Should never be seen
 		default:
-			printer.printDebug("DEFAULT CASE");
+			printer.printMsg("DEFAULT CASE");
 			break;
 		}
 
 	}
+#endif
 }

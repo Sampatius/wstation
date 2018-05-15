@@ -16,7 +16,7 @@ public:
 	void printFailedInput();
 	void printQuit();
 
-	void printDebug(std::string message);
+	void printMsg(std::string message);
 
 private:
 	std::vector<std::string> listOfCommands;

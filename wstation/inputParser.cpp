@@ -30,6 +30,8 @@ std::string inputParser::readInput()
 		// If it is new line, construct a string from the buffer Vector and push it to input Vector and break from while loop
 		if (c == '\n') {
 			std::string temp(inputBuff.begin(), inputBuff.end());
+			std::string::iterator new_end = std::unique(temp.begin(), temp.end(), bothAreSpaces);
+			temp.erase(new_end, temp.end());
 			return temp;
 		}
 
@@ -71,12 +73,23 @@ void inputParser::parseInput(std::string input)
 				temp = token.substr((pos + 1), std::string::npos);
 				if (temp.length() > 0) {
 					inputsVec.push_back(token);
-					location = temp;
 				}
 			}
 		}
 	}
 }
+
+int inputParser::parseInt(std::string input)
+{
+	try {
+		return std::stoi(input);
+	}
+	catch (std::invalid_argument&) {
+		return -1;
+	}
+}
+
+/* Map input to a enum that is used in the Menu navigation */
 
 commands inputParser::mapInput(std::string input) 
 {

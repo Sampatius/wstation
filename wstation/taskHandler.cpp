@@ -12,26 +12,15 @@ taskHandler::~taskHandler()
 {
 }
 
-void taskHandler::startTask(std::vector<std::string> inputs, int delay, std::string locationID)
+/* Function for starting tasks */
+
+void taskHandler::startTask(std::string input, int delay)
 {
-	/*
-	for (auto &input : inputs) {
-		url.append(input);
-		url.append("&");
-	}
+	url.append(input);
 
-	while (taskRunning) {
-		cHandler.initCurl(url);
-
-		cHandler.openAndWrite(fileName);
-
-		cHandler.cleanUp();
-		sleep(10);
-	}
-	*/
 	pid = fork();
+	recordTask(pid, input);
 	if (pid == 0) {
-		recordTask(::getpid(), locationID);
 		while (1) {
 			std::cout << "CHILD! PID: " << ::getpid() << std::endl;
 			sleep(5);
@@ -42,17 +31,31 @@ void taskHandler::startTask(std::vector<std::string> inputs, int delay, std::str
 	}
 }
 
-void taskHandler::endTask(std::string locationID)
+/* Function for ending task based on user given location */
+
+int taskHandler::endTask(std::string locationID)
 {
 	for (auto &record : pidRecords) {
 		if (record.second == locationID) {
-			kill(record.first, SIGKILL);
-			std::cout << "KILLED!" << std::endl;
+			kill(record.first, SIGINT);
+			return 1;
 		}
 	}
+	return 0;
 }
+
+/* Record process ID and location parameter's value to a Vector as a pair */
 
 void taskHandler::recordTask(pid_t pid, std::string locationID)
 {
 	pidRecords.push_back(std::make_pair(pid, locationID));
+}
+
+void taskHandler::testFunc()
+{
+	cHandler.initCurl(url);
+
+	cHandler.openAndWrite("test");
+
+	cHandler.cleanUp();
 }

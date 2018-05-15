@@ -83,7 +83,7 @@ void messagePrinter::printQuit()
 	std::cout << "Exiting program." << std::endl;
 }
 
-void messagePrinter::printDebug(std::string message)
+void messagePrinter::printMsg(std::string message)
 {
 	std::cout << message << std::endl;
 }

@@ -10,13 +10,14 @@ public:
 	taskHandler();
 	~taskHandler();
 
-	void startTask(std::vector<std::string> inputs, int delay);
-	void endTask(std::string locationID);
+	void startTask(std::string input, int delay);
+	int endTask(std::string locationID);
 	void recordTask(pid_t pid, std::string locationID);
+	void testFunc();
 
 private:
 	curlHandler cHandler;
-	std::string url = "http://data.fmi.fi/fmi-apikey/5a633ac3-ef79-4ba6-ae28-b3b737b76871/wfs?request=getFeature&storedquery_id=fmi::observations::weather::daily::simple&place=helsinki&";
+	std::string url = "http://data.fmi.fi/fmi-apikey/KEY/wfs?request=getFeature&storedquery_id=fmi::observations::weather::daily::simple&place=helsinki&starttime=2018-05-14T00:00:00Z&endtime=2018-05-15T00:00:00Z&parameters=tday&timestep=60&";
 	pid_t pid;
-	std::vector<std::pair<pid_t, std::string>> pidRecord;
+	std::vector<std::pair<pid_t, std::string>> pidRecords;
 };
