@@ -16,7 +16,7 @@ public:
 
 private:
 	curlHandler cHandler;
-	std::string url = "http://data.fmi.fi/fmi-apikey/KEY/wfs?request=getFeature&storedquery_id=fmi::observations::weather::daily::simple&place=helsinki&";
+	std::string url = "http://data.fmi.fi/fmi-apikey/5a633ac3-ef79-4ba6-ae28-b3b737b76871/wfs?request=getFeature&storedquery_id=fmi::observations::weather::daily::simple&place=helsinki&";
 	pid_t pid;
 	std::vector<std::pair<pid_t, std::string>> pidRecord;
 };
