@@ -48,7 +48,7 @@ int main() {
 				parser.parseInput(userInput);
 				printer.printDebug("ENTER DELAY");
 				userInput = parser.readInput();
-				handler.startTask(parser.getInputs(), std::stoi(userInput));
+				handler.startTask(parser.getInputs(), std::stoi(userInput), parser.getLocation());
 				break;
 
 			// Check case -- Display report about weather monitoring

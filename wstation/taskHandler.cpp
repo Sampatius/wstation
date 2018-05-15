@@ -1,6 +1,5 @@
 #include "taskHandler.h"
 #include <iostream>
-#include <sys/wait.h>
 
 
 
@@ -13,7 +12,7 @@ taskHandler::~taskHandler()
 {
 }
 
-void taskHandler::startTask(std::vector<std::string> inputs, int delay)
+void taskHandler::startTask(std::vector<std::string> inputs, int delay, std::string locationID)
 {
 	/*
 	for (auto &input : inputs) {
@@ -30,21 +29,30 @@ void taskHandler::startTask(std::vector<std::string> inputs, int delay)
 		sleep(10);
 	}
 	*/
-	std::cout << "CHILD! PID: " << ::getpid() << std::endl;
-	sleep(5);
+	pid = fork();
+	if (pid == 0) {
+		recordTask(::getpid(), locationID);
+		while (1) {
+			std::cout << "CHILD! PID: " << ::getpid() << std::endl;
+			sleep(5);
+		}
+	}
+	else {
+		std::cout << "PARENT!" << std::endl;
+	}
 }
 
 void taskHandler::endTask(std::string locationID)
 {
-	for (auto &record : pidRecord) {
+	for (auto &record : pidRecords) {
 		if (record.second == locationID) {
 			kill(record.first, SIGKILL);
+			std::cout << "KILLED!" << std::endl;
 		}
 	}
-	std::cout << "ENDED!" << std::endl;
 }
 
 void taskHandler::recordTask(pid_t pid, std::string locationID)
 {
-	pidRecord.push_back(std::make_pair(pid, locationID));
+	pidRecords.push_back(std::make_pair(pid, locationID));
 }
