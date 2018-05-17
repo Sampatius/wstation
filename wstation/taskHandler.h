@@ -12,6 +12,8 @@ public:
 	taskHandler();
 	~taskHandler();
 
+	inline std::vector<std::pair<pid_t, std::string>> getRecords() { return pidRecords; }
+
 	void startTask(std::string input, int delay);
 	int endTask(std::string locationID);
 	void recordTask(pid_t pid, std::string locationID);

@@ -30,8 +30,8 @@ void taskHandler::startTask(std::string input, int delay)
 			std::time_t end = std::time(nullptr);
 			std::tm* startLocal = std::localtime(&start);
 			std::tm* endLocal = std::localtime(&end);
-			std::strftime(startTime, sizeof startTime, "%Y-%m-%dT%H:%M:00Z", startLocal);
-			std::strftime(endTime, sizeof endTime, "%Y-%m-%dT%H:%M:30Z", endLocal);
+			std::strftime(startTime, sizeof(startTime), "%Y-%m-%dT%H:%M:00Z", startLocal);
+			std::strftime(endTime, sizeof(endTime), "%Y-%m-%dT%H:%M:30Z", endLocal);
 			sprintf(url, "http://data.fmi.fi/fmi-apikey/5a633ac3-ef79-4ba6-ae28-b3b737b76871/wfs?request=getFeature&storedquery_id=fmi::forecast::hirlam::surface::point::simple&parameters=temperature&place=%s&starttime=%s&endtime=%s&timestep=1", input.c_str(), startTime, endTime);
 			cHandler.initCurl(url);
 			cHandler.openAndWrite(input);

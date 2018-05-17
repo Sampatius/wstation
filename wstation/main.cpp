@@ -1,34 +1,43 @@
 #include "inputParser.h"
 #include "messagePrinter.h"
 #include "taskHandler.h"
+#include "logger.h"
 
-#define test	1
+void signalHandler(int signo);
 
-int main() {
+// Objects
+inputParser parser;
+messagePrinter printer;
+taskHandler handler;
+logger log;
 
-	// Objects
-	inputParser parser;
-	messagePrinter printer;
-	taskHandler handler;
+int main() {	
 
 	// Variables and initialization Vectors
 	std::string userInput;
 	int interval;
 	std::vector<std::string> availableCommands = { "start", "help", "quit" };
-	std::vector<std::string> availableOptions = { "place", "parameters", "starttime", "endtime" , "timestep"};
-	std::vector<std::string> availableParameters = { "tday", "tmin", "tmax" };
+	std::vector<std::string> availableSubMenuCommands = { "place", "parameters", "starttime", "endtime" , "timestep"};
 
 	// Loop condition
 	bool loop = true;
 
-	// Initialize the printer class with commands, options and parameters
-	printer.initLists(availableCommands, availableOptions, availableParameters);
+	signal(SIGINT, signalHandler);
 
-#if test
+	// Initialize the printer class with commands, options and parameters
+	printer.initLists(availableCommands, availableSubMenuCommands);
+
+	log.openFile();
+
 	// Print intro
 	printer.printIntro();
 
+	log.writeLog("TEST");
+	log.writeLog("TEST2");
+	log.writeLog("TEST3");
 
+	log.closeFile();
+	/*
 	// Main loop
 	while (loop) {
 
@@ -64,6 +73,9 @@ int main() {
 			// Check case -- Display report about weather monitoring
 			case check:
 				printer.printMsg("CHECK");
+				for (auto &record : handler.getRecords()) {
+					printer.printMsg(record.second);
+				}
 				break;
 			
 			// End case -- Terminate a process
@@ -90,9 +102,9 @@ int main() {
 
 			// Default case -- Should never be seen
 			default:
-				printer.printMsg("START MENU DEFAULT");
+				printer.printMsg("SUB MENU DEFAULT");
+				break;
 			}
-			break;
 
 		// Help case -- Print out info about commands
 		case help:
@@ -116,7 +128,16 @@ int main() {
 			printer.printMsg("DEFAULT CASE");
 			break;
 		}
-
 	}
-#endif
+	log.closeFile();
+	exit(0);*/
+}
+
+void signalHandler(int signo)
+{
+	if (signo == SIGINT) {
+		printer.printMsg("CTRL-C!");
+		handler.quitClean();
+		exit(0);
+	}
 }

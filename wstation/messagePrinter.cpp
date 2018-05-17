@@ -11,18 +11,14 @@ messagePrinter::~messagePrinter()
 {
 }
 
-void messagePrinter::initLists(std::vector<std::string> commandsVec, std::vector<std::string> optionsVec, std::vector<std::string> parametersVec)
+void messagePrinter::initLists(std::vector<std::string> commandsVec, std::vector<std::string> subMenuVec)
 {
 	for (auto &commands : commandsVec) {
 		listOfCommands.push_back(commands);
 	}
 
-	for (auto &options : optionsVec) {
-		listOfQueryOptions.push_back(options);
-	}
-
-	for (auto &parameters : parametersVec) {
-		listOfParameters.push_back(parameters);
+	for (auto &options : subMenuVec) {
+		listOfSubMenuCommands.push_back(options);
 	}
 }
 
@@ -40,35 +36,27 @@ void messagePrinter::printIntro()
 
 void messagePrinter::printInstructions()
 {
-	std::cout << "Please enter the location and possible parameters for search." << std::endl;
+	std::cout << "Please enter the location to monitor." << std::endl;
 
 }
 
-void messagePrinter::printHelp()
+void messagePrinter::printMainMenuHelp()
 {
-	std::cout << "Available commands are listed below:" << std::endl;
+	std::cout << "Available Main Menu commands are listed below:" << std::endl;
 	printLine();
 	for (auto &commands : listOfCommands) {
 		std::cout << commands << std::endl;
 	}
 	
 	std::cout << std::endl;
-	std::cout << "When performing a search for weather reports the search query must contain atleast location\n"\
-		"in format 'location=target'. Query can be fitted with additional search options, described below.\n"\
-		"Additional parameters can be introduced by adding 'parameters=' to the input." << std::endl;
-	std::cout << std::endl;
+}
 
-	std::cout << "Available options:" << std::endl;
+void messagePrinter::printSubMenuHelp()
+{
+	std::cout << "Available Sub Menu commands are listed below:" << std::endl;
 	printLine();
-	for (auto &options : listOfQueryOptions) {
-		std::cout << options << std::endl;
-	}
-	std::cout << std::endl;
-
-	std::cout << "Available parameters:" << std::endl;
-	printLine();
-	for (auto &parameters : listOfParameters) {
-		std::cout << parameters << std::endl;
+	for (auto &subCom : listOfSubMenuCommands) {
+		std::cout << subCom << std::endl;
 	}
 	std::cout << std::endl;
 }
