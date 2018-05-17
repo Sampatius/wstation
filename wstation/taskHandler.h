@@ -3,6 +3,8 @@
 #include <vector>
 #include <unistd.h>
 #include <signal.h>
+#include <ctime>
+#include <locale>
 
 class taskHandler
 {
@@ -13,11 +15,12 @@ public:
 	void startTask(std::string input, int delay);
 	int endTask(std::string locationID);
 	void recordTask(pid_t pid, std::string locationID);
+	void quitClean();
 	void testFunc();
 
 private:
 	curlHandler cHandler;
-	std::string url = "http://data.fmi.fi/fmi-apikey/KEY/wfs?request=getFeature&storedquery_id=fmi::observations::weather::daily::simple&place=helsinki&starttime=2018-05-14T00:00:00Z&endtime=2018-05-15T00:00:00Z&parameters=tday&timestep=60&";
+	char* url;
 	pid_t pid;
 	std::vector<std::pair<pid_t, std::string>> pidRecords;
 };

@@ -43,7 +43,7 @@ void curlHandler::openAndWrite(std::string filename)
 {
 
 	// Open the file
-	pagefile = fopen(filename.c_str(), "wb");
+	pagefile = fopen(filename.c_str(), "ab");
 	if (pagefile) {
 
 		// Write the page body to this file handle

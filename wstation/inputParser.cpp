@@ -51,7 +51,7 @@ std::string inputParser::readInput()
 	Removes excess whitespaces from the user input and splits the string to a vector
 */
 
-void inputParser::parseInput(std::string input) 
+void inputParser::parseInput(std::string input)
 {
 
 	// Iterate over the string and remove excess whitespaces

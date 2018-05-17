@@ -16,18 +16,28 @@ taskHandler::~taskHandler()
 
 void taskHandler::startTask(std::string input, int delay)
 {
-	url.append(input);
+	setenv("FI", "/usr/share/zoneinfo/Europe/Helsinki", 1);
+	char startTime[30], endTime[30];
 
 	pid = fork();
+
 	recordTask(pid, input);
+
 	if (pid == 0) {
 		while (1) {
-			std::cout << "CHILD! PID: " << ::getpid() << std::endl;
-			sleep(5);
+			std::cout << "CHILD!" << std::endl;
+			std::time_t start = std::time(nullptr);
+			std::time_t end = std::time(nullptr);
+			std::tm* startLocal = std::localtime(&start);
+			std::tm* endLocal = std::localtime(&end);
+			std::strftime(startTime, sizeof startTime, "%Y-%m-%dT%H:%M:00Z", startLocal);
+			std::strftime(endTime, sizeof endTime, "%Y-%m-%dT%H:%M:30Z", endLocal);
+			sprintf(url, "http://data.fmi.fi/fmi-apikey/5a633ac3-ef79-4ba6-ae28-b3b737b76871/wfs?request=getFeature&storedquery_id=fmi::forecast::hirlam::surface::point::simple&parameters=temperature&place=%s&starttime=%s&endtime=%s&timestep=1", input.c_str(), startTime, endTime);
+			cHandler.initCurl(url);
+			cHandler.openAndWrite(input);
+			cHandler.cleanUp();
+			sleep(delay * 60);
 		}
-	}
-	else {
-		std::cout << "PARENT!" << std::endl;
 	}
 }
 
@@ -35,9 +45,10 @@ void taskHandler::startTask(std::string input, int delay)
 
 int taskHandler::endTask(std::string locationID)
 {
-	for (auto &record : pidRecords) {
-		if (record.second == locationID) {
-			kill(record.first, SIGINT);
+	for (int i = 0; i < pidRecords.size(); i++) {
+		if (pidRecords.at(i).second == locationID) {
+			kill(pidRecords.at(i).first, SIGINT);
+			pidRecords.erase(pidRecords.begin()+1);
 			return 1;
 		}
 	}
@@ -51,11 +62,27 @@ void taskHandler::recordTask(pid_t pid, std::string locationID)
 	pidRecords.push_back(std::make_pair(pid, locationID));
 }
 
+void taskHandler::quitClean()
+{
+	for (auto &record : pidRecords) {
+		kill(record.first, SIGINT);
+	}
+}
+
 void taskHandler::testFunc()
 {
-	cHandler.initCurl(url);
+	setenv("FI", "/usr/share/zoneinfo/Europe/Helsinki", 1);
+	char startTime[30], endTime[30];
 
-	cHandler.openAndWrite("test");
-
-	cHandler.cleanUp();
+	while (1) {
+		std::time_t start = std::time(nullptr);
+		std::time_t end = std::time(nullptr);
+		std::tm* startLocal = std::localtime(&start);
+		std::tm* endLocal = std::localtime(&end);
+		std::strftime(startTime, sizeof startTime, "%Y-%m-%dT%H:%M:00Z", startLocal);
+		std::strftime(endTime, sizeof endTime, "%Y-%m-%dT%H:%M:30Z", endLocal);
+		std::cout << startTime << std::endl;
+		std::cout << endTime << std::endl;
+		sleep(30);
+	}
 }

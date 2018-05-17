@@ -2,7 +2,7 @@
 #include "messagePrinter.h"
 #include "taskHandler.h"
 
-#define test	0
+#define test	1
 
 int main() {
 
@@ -23,8 +23,6 @@ int main() {
 
 	// Initialize the printer class with commands, options and parameters
 	printer.initLists(availableCommands, availableOptions, availableParameters);
-
-	handler.testFunc();
 
 #if test
 	// Print intro
@@ -59,9 +57,7 @@ int main() {
 					break;
 				}
 				else {
-					printer.printMsg(userInput);
-					std::cout << "Interval: " << interval << std::endl;
-					//handler.startTask(userInput, interval);
+					handler.startTask(userInput, interval);
 					break;
 				}
 
@@ -107,6 +103,7 @@ int main() {
 		case quit:
 			printer.printMsg("QUIT");
 			loop = false;
+			handler.quitClean();
 			break;
 		
 		// NOT_DEFINED case -- If input doesn't get matched in mapping function, enter this case
