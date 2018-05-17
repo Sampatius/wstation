@@ -4,6 +4,9 @@
 #include <fcntl.h>
 #include <ctime>
 
+#define ERROR_LOG	1
+#define REPORT_LOG	2
+
 class logger
 {
 public:
@@ -12,9 +15,9 @@ public:
 
 	void openFile();
 	void closeFile();
-	void writeLog(std::string input);
+	void writeLog(int logType, std::string input);
 
 private:
-	int fileDesc;
+	int errorDesc, reportDesc;
 };
 

@@ -11,12 +11,8 @@ public:
 	void initLists(std::vector<std::string> commandsVec, std::vector<std::string> subMenuVec);
 	void printLine();
 	void printIntro();
-	void printInstructions();
 	void printMainMenuHelp();
 	void printSubMenuHelp();
-	void printFailedInput();
-	void printQuit();
-
 	void printMsg(std::string message);
 
 private:

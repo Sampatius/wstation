@@ -79,6 +79,7 @@ void inputParser::parseInput(std::string input)
 	}
 }
 
+/* Try to parse input to int and catch exceptions, return value based on the result. */
 int inputParser::parseInt(std::string input)
 {
 	try {

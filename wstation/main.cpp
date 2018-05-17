@@ -3,26 +3,22 @@
 #include "taskHandler.h"
 #include "logger.h"
 
-void signalHandler(int signo);
+int main() {
 
-// Objects
-inputParser parser;
-messagePrinter printer;
-taskHandler handler;
-logger log;
-
-int main() {	
+	// Objects
+	inputParser parser;
+	messagePrinter printer;
+	taskHandler handler;
+	logger log;
 
 	// Variables and initialization Vectors
 	std::string userInput;
 	int interval;
 	std::vector<std::string> availableCommands = { "start", "help", "quit" };
-	std::vector<std::string> availableSubMenuCommands = { "place", "parameters", "starttime", "endtime" , "timestep"};
+	std::vector<std::string> availableSubMenuCommands = { "new - start a new monitoring process", "check - display currently running processes", "end - end a process", "previous - return to main menu"};
 
 	// Loop condition
 	bool loop = true;
-
-	signal(SIGINT, signalHandler);
 
 	// Initialize the printer class with commands, options and parameters
 	printer.initLists(availableCommands, availableSubMenuCommands);
@@ -32,12 +28,11 @@ int main() {
 	// Print intro
 	printer.printIntro();
 
-	log.writeLog("TEST");
-	log.writeLog("TEST2");
-	log.writeLog("TEST3");
+	// Print Main Menu help
+	printer.printMainMenuHelp();
 
-	log.closeFile();
-	/*
+	handler.initSignalHandling();
+
 	// Main loop
 	while (loop) {
 
@@ -49,7 +44,9 @@ int main() {
 
 		// Sub Menu -- User has other actions available
 		case start:
-			printer.printMsg("START");
+
+			// Print Sub Menu help and get user input
+			printer.printSubMenuHelp();
 			userInput = parser.readInput();
 
 			// Second layer of switch case to handle the functionality in so called Sub Menu
@@ -57,22 +54,24 @@ int main() {
 
 			// Search case -- User starts a new process to monitor selected location
 			case search:
-				printer.printMsg("SEARCH");
+				printer.printMsg("Please enter a location to monitor.");
 				userInput = parser.readInput();
-				printer.printMsg("ENTER DELAY");
+				printer.printMsg("Please enter delay in minutes.");
 				interval = parser.parseInt(parser.readInput());
 				if (interval < 0) {
 					printer.printMsg("Invalid or negative value given for interval. Returning to Main menu.");
-					break;
+					log.writeLog(ERROR_LOG, "INVALID DELAY GIVEN TO NEW PROCESS.");
 				}
 				else {
 					handler.startTask(userInput, interval);
-					break;
+					log.writeLog(REPORT_LOG, "PROCESS STARTED FOR LOCATION: " + userInput + " WITH DELAY OF: " + std::to_string(interval) + " MINUTE(S).");
 				}
+				break;
 
-			// Check case -- Display report about weather monitoring
+			// Check case -- Display running processes
 			case check:
-				printer.printMsg("CHECK");
+				printer.printMsg("Below you can see all currently running processes.");
+				printer.printLine();
 				for (auto &record : handler.getRecords()) {
 					printer.printMsg(record.second);
 				}
@@ -80,64 +79,62 @@ int main() {
 			
 			// End case -- Terminate a process
 			case end:
-				printer.printMsg("END");
+				printer.printMsg("Please enter the name of the process you wish to end.");
+				printer.printLine();
 				userInput = parser.readInput();
 				if (handler.endTask(userInput)) {
 					printer.printMsg("Process ended.");
+					log.writeLog(REPORT_LOG, "PROCESS ENDED FOR LOCATION: " + userInput);
 				}
 				else {
 					printer.printMsg("No process found with given location.");
+					log.writeLog(ERROR_LOG, "INVALID LOCATION ID GIVEN. CAN'T TERMINATE PROCESS.");
 				}
 				break;
 
 			// Previous case -- Return back to Main Menu
 			case previous:
-				printer.printMsg("PREVIOUS");
 				break;
 
 			// NOT_DEFINED case -- Invalid input in Sub Menu
 			case NOT_DEFINED:
-				printer.printMsg("NOT DEFINED SUBMENU");
+				printer.printMsg("Input failed. Logging action.");
+				log.writeLog(ERROR_LOG, "INPUT FAILED IN MAIN MENU");
 				break;
 
 			// Default case -- Should never be seen
 			default:
-				printer.printMsg("SUB MENU DEFAULT");
+				printer.printMsg("Sub Menu default case. This should not be seen.");
+				log.writeLog(ERROR_LOG, "DEFAULT CASE REACHED IN SUB MENU");
 				break;
 			}
+		break;
 
 		// Help case -- Print out info about commands
 		case help:
-			printer.printMsg("HELP");
+			printer.printMainMenuHelp();
+			printer.printSubMenuHelp();
 			break;
 
 		// Quit case -- Exit program and close all program related processes
 		case quit:
-			printer.printMsg("QUIT");
 			loop = false;
 			handler.quitClean();
 			break;
 		
 		// NOT_DEFINED case -- If input doesn't get matched in mapping function, enter this case
 		case NOT_DEFINED:
-			printer.printMsg("FAILED INPUT");
+			printer.printMsg("Input failed. Logging action.");
+			log.writeLog(ERROR_LOG, "INPUT FAILED IN MAIN MENU");
 			break;
 
 		// Default case -- Should never be seen
 		default:
-			printer.printMsg("DEFAULT CASE");
+			printer.printMsg("Default case. This should not be seen.");
+			log.writeLog(ERROR_LOG, "DEFAULT CASE REACHED IN MAIN MENU");
 			break;
 		}
 	}
 	log.closeFile();
-	exit(0);*/
-}
-
-void signalHandler(int signo)
-{
-	if (signo == SIGINT) {
-		printer.printMsg("CTRL-C!");
-		handler.quitClean();
-		exit(0);
-	}
+	exit(0);
 }

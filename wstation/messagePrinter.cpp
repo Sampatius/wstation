@@ -11,6 +11,7 @@ messagePrinter::~messagePrinter()
 {
 }
 
+/* Initialize the Vectors with given string Vectors of available commands in Main and Sub Menu */
 void messagePrinter::initLists(std::vector<std::string> commandsVec, std::vector<std::string> subMenuVec)
 {
 	for (auto &commands : commandsVec) {
@@ -22,11 +23,13 @@ void messagePrinter::initLists(std::vector<std::string> commandsVec, std::vector
 	}
 }
 
+/* Print line of dashes for aesthetics */
 void messagePrinter::printLine()
 {
 	std::cout << "----------------------------------------" << std::endl;
 }
 
+/* Print the program name */
 void messagePrinter::printIntro()
 {
 	std::cout << "#----------------------#" << std::endl;
@@ -34,12 +37,7 @@ void messagePrinter::printIntro()
 	std::cout << "#----------------------#" << std::endl;
 }
 
-void messagePrinter::printInstructions()
-{
-	std::cout << "Please enter the location to monitor." << std::endl;
-
-}
-
+/* Print Main Menu help from Vector */
 void messagePrinter::printMainMenuHelp()
 {
 	std::cout << "Available Main Menu commands are listed below:" << std::endl;
@@ -51,6 +49,7 @@ void messagePrinter::printMainMenuHelp()
 	std::cout << std::endl;
 }
 
+/* Print Sub Menu help from Vector */
 void messagePrinter::printSubMenuHelp()
 {
 	std::cout << "Available Sub Menu commands are listed below:" << std::endl;
@@ -61,16 +60,7 @@ void messagePrinter::printSubMenuHelp()
 	std::cout << std::endl;
 }
 
-void messagePrinter::printFailedInput()
-{
-	std::cout << "Input not recognized. Try 'help' to list available commands." << std::endl;
-}
-
-void messagePrinter::printQuit()
-{
-	std::cout << "Exiting program." << std::endl;
-}
-
+/* Function used to print smaller messages in the program */
 void messagePrinter::printMsg(std::string message)
 {
 	std::cout << message << std::endl;
