@@ -31,8 +31,6 @@ int main() {
 	// Print Main Menu help
 	printer.printMainMenuHelp();
 
-	handler.initSignalHandling();
-
 	// Main loop
 	while (loop) {
 

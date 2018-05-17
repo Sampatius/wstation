@@ -84,23 +84,3 @@ void taskHandler::quitClean()
 		kill(record.first, SIGHUP);
 	}
 }
-
-void taskHandler::initSignalHandling()
-{
-	new_action.sa_handler = signalHandler;
-	sigemptyset(&new_action.sa_mask);
-	sigaddset(&new_action.sa_mask, SIGTERM);
-	new_action.sa_flags = 0;
-
-	sigaction(SIGINT, NULL, &old_action);
-
-	if (old_action.sa_handler != SIG_IGN)
-	{
-		sigaction(SIGINT, &new_action, NULL);
-	}
-}
-
-void taskHandler::signalHandler(int signo)
-{
-	printf("HELLO!\n");
-}
